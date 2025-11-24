@@ -28,7 +28,7 @@ if (fs.existsSync(autoDir)) {
   const files = fs.readdirSync(autoDir).filter(f => f.endsWith('.route.js'))
   for (const f of files) {
     const full = path.join(autoDir, f)
-    const mod = require(full)
+    const mod = await import(full)
     const router = mod.default || mod
     if (router) app.use('/', router)
   }
