@@ -8,7 +8,7 @@ class UserService {
   /**
    * Get user by ID
    */
-  async getUserById(userId) {
+  async getUserById (userId) {
     const user = await User.findById(userId)
     if (!user) {
       throw new Error('User not found')
@@ -19,17 +19,17 @@ class UserService {
   /**
    * Get user profile
    */
-  async getProfile(userId) {
+  async getProfile (userId) {
     return this.getUserById(userId)
   }
 
   /**
    * Update user profile
    */
-  async updateProfile(userId, updates) {
+  async updateProfile (userId, updates) {
     const allowedUpdates = ['firstName', 'lastName', 'phone', 'address', 'avatar', 'preferences']
     const filteredUpdates = {}
-    
+
     for (const key of allowedUpdates) {
       if (updates[key] !== undefined) {
         filteredUpdates[key] = updates[key]
@@ -52,7 +52,7 @@ class UserService {
   /**
    * Update notification preferences
    */
-  async updateNotificationPreferences(userId, preferences) {
+  async updateNotificationPreferences (userId, preferences) {
     const user = await User.findByIdAndUpdate(
       userId,
       { $set: { 'preferences.notifications': preferences } },
@@ -69,7 +69,7 @@ class UserService {
   /**
    * Add subscription
    */
-  async addSubscription(userId, subscription) {
+  async addSubscription (userId, subscription) {
     const user = await User.findByIdAndUpdate(
       userId,
       { $addToSet: { subscriptions: subscription } },
@@ -86,7 +86,7 @@ class UserService {
   /**
    * Remove subscription
    */
-  async removeSubscription(userId, subscriptionId) {
+  async removeSubscription (userId, subscriptionId) {
     const user = await User.findByIdAndUpdate(
       userId,
       { $pull: { subscriptions: { _id: subscriptionId } } },
@@ -103,7 +103,7 @@ class UserService {
   /**
    * Get user subscriptions
    */
-  async getSubscriptions(userId) {
+  async getSubscriptions (userId) {
     const user = await User.findById(userId).select('subscriptions')
     if (!user) {
       throw new Error('User not found')
@@ -114,7 +114,7 @@ class UserService {
   /**
    * Deactivate account
    */
-  async deactivateAccount(userId) {
+  async deactivateAccount (userId) {
     const user = await User.findByIdAndUpdate(
       userId,
       { isActive: false },
@@ -131,9 +131,9 @@ class UserService {
   /**
    * Delete account (GDPR right to erasure)
    */
-  async deleteAccount(userId) {
+  async deleteAccount (userId) {
     const user = await User.findByIdAndDelete(userId)
-    
+
     if (!user) {
       throw new Error('User not found')
     }
@@ -147,11 +147,11 @@ class UserService {
   /**
    * Search users (admin function)
    */
-  async searchUsers(query, options = {}) {
+  async searchUsers (query, options = {}) {
     const { page = 1, limit = 20, role, isActive } = options
-    
+
     const filter = {}
-    
+
     if (query) {
       filter.$or = [
         { firstName: new RegExp(query, 'i') },
@@ -159,7 +159,7 @@ class UserService {
         { email: new RegExp(query, 'i') }
       ]
     }
-    
+
     if (role) filter.role = role
     if (isActive !== undefined) filter.isActive = isActive
 
@@ -184,7 +184,7 @@ class UserService {
   /**
    * Update user role (admin function)
    */
-  async updateUserRole(userId, role) {
+  async updateUserRole (userId, role) {
     const validRoles = ['citizen', 'staff', 'admin']
     if (!validRoles.includes(role)) {
       throw new Error('Invalid role')

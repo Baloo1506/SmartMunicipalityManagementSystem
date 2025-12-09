@@ -7,9 +7,11 @@ import { io } from 'socket.io-client'
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000'
 
 class SocketService {
-  socket = null
+  constructor () {
+    this.socket = null
+  }
 
-  connect(userId) {
+  connect (userId) {
     if (this.socket?.connected) return
 
     this.socket = io(SOCKET_URL, {
@@ -30,32 +32,32 @@ class SocketService {
     return this.socket
   }
 
-  disconnect() {
+  disconnect () {
     if (this.socket) {
       this.socket.disconnect()
       this.socket = null
     }
   }
 
-  subscribe(topic) {
+  subscribe (topic) {
     if (this.socket) {
       this.socket.emit('subscribe', topic)
     }
   }
 
-  unsubscribe(topic) {
+  unsubscribe (topic) {
     if (this.socket) {
       this.socket.emit('unsubscribe', topic)
     }
   }
 
-  on(event, callback) {
+  on (event, callback) {
     if (this.socket) {
       this.socket.on(event, callback)
     }
   }
 
-  off(event, callback) {
+  off (event, callback) {
     if (this.socket) {
       this.socket.off(event, callback)
     }

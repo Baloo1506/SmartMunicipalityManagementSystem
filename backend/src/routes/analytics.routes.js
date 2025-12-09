@@ -35,11 +35,11 @@ router.get('/summary', async (req, res, next) => {
 router.get('/users/growth', async (req, res, next) => {
   try {
     const { startDate, endDate, interval } = req.query
-    
+
     // Default to last 30 days
     const end = endDate ? new Date(endDate) : new Date()
     const start = startDate ? new Date(startDate) : new Date(end - 30 * 24 * 60 * 60 * 1000)
-    
+
     const growth = await AnalyticsService.getUserGrowth(start, end, interval)
     res.json({
       success: true,
@@ -89,10 +89,10 @@ router.get('/users/geographic', async (req, res, next) => {
 router.get('/content/engagement', async (req, res, next) => {
   try {
     const { startDate, endDate } = req.query
-    
+
     const end = endDate ? new Date(endDate) : new Date()
     const start = startDate ? new Date(startDate) : new Date(end - 30 * 24 * 60 * 60 * 1000)
-    
+
     const engagement = await AnalyticsService.getContentEngagement(start, end)
     res.json({
       success: true,
@@ -147,10 +147,10 @@ router.get('/content/contributors', async (req, res, next) => {
 router.get('/events', async (req, res, next) => {
   try {
     const { startDate, endDate } = req.query
-    
+
     const end = endDate ? new Date(endDate) : new Date()
     const start = startDate ? new Date(startDate) : new Date(end - 30 * 24 * 60 * 60 * 1000)
-    
+
     const analytics = await AnalyticsService.getEventAnalytics(start, end)
     res.json({
       success: true,
@@ -168,10 +168,10 @@ router.get('/events', async (req, res, next) => {
 router.get('/report', async (req, res, next) => {
   try {
     const { startDate, endDate } = req.query
-    
+
     const end = endDate ? new Date(endDate) : new Date()
     const start = startDate ? new Date(startDate) : new Date(end - 30 * 24 * 60 * 60 * 1000)
-    
+
     const report = await AnalyticsService.generateReport(start, end)
     res.json({
       success: true,

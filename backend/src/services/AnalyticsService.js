@@ -12,7 +12,7 @@ class AnalyticsService {
   /**
    * Get dashboard summary
    */
-  async getDashboardSummary() {
+  async getDashboardSummary () {
     const [
       totalUsers,
       activeUsers,
@@ -48,7 +48,7 @@ class AnalyticsService {
   /**
    * Get user growth over time
    */
-  async getUserGrowth(startDate, endDate, interval = 'day') {
+  async getUserGrowth (startDate, endDate, interval = 'day') {
     const matchStage = {
       createdAt: {
         $gte: new Date(startDate),
@@ -56,7 +56,7 @@ class AnalyticsService {
       }
     }
 
-    const groupFormat = interval === 'month' 
+    const groupFormat = interval === 'month'
       ? { year: { $year: '$createdAt' }, month: { $month: '$createdAt' } }
       : { year: { $year: '$createdAt' }, month: { $month: '$createdAt' }, day: { $dayOfMonth: '$createdAt' } }
 
@@ -77,7 +77,7 @@ class AnalyticsService {
   /**
    * Get content engagement metrics
    */
-  async getContentEngagement(startDate, endDate) {
+  async getContentEngagement (startDate, endDate) {
     const matchStage = {
       publishedAt: {
         $gte: new Date(startDate),
@@ -123,7 +123,7 @@ class AnalyticsService {
   /**
    * Get event analytics
    */
-  async getEventAnalytics(startDate, endDate) {
+  async getEventAnalytics (startDate, endDate) {
     const matchStage = {
       startDate: {
         $gte: new Date(startDate),
@@ -165,7 +165,7 @@ class AnalyticsService {
   /**
    * Get top contributors
    */
-  async getTopContributors(limit = 10) {
+  async getTopContributors (limit = 10) {
     const topPosters = await Post.aggregate([
       { $match: { status: 'published' } },
       { $group: { _id: '$author', postCount: { $sum: 1 } } },
@@ -220,7 +220,7 @@ class AnalyticsService {
   /**
    * Get trending topics/tags
    */
-  async getTrendingTopics(days = 7, limit = 10) {
+  async getTrendingTopics (days = 7, limit = 10) {
     const startDate = new Date()
     startDate.setDate(startDate.getDate() - days)
 
@@ -254,7 +254,7 @@ class AnalyticsService {
   /**
    * Get user activity by role
    */
-  async getUserActivityByRole() {
+  async getUserActivityByRole () {
     const activity = await User.aggregate([
       {
         $group: {
@@ -276,7 +276,7 @@ class AnalyticsService {
   /**
    * Get geographic distribution
    */
-  async getGeographicDistribution() {
+  async getGeographicDistribution () {
     const distribution = await User.aggregate([
       { $match: { 'address.city': { $exists: true, $ne: '' } } },
       {
@@ -295,7 +295,7 @@ class AnalyticsService {
   /**
    * Export analytics report
    */
-  async generateReport(startDate, endDate) {
+  async generateReport (startDate, endDate) {
     const [
       summary,
       userGrowth,

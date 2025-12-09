@@ -9,7 +9,7 @@ class EventService {
   /**
    * Create an event
    */
-  async createEvent(organizerId, eventData) {
+  async createEvent (organizerId, eventData) {
     const event = await Event.create({
       ...eventData,
       organizer: organizerId
@@ -37,7 +37,7 @@ class EventService {
   /**
    * Get events with filters
    */
-  async getEvents(filters = {}, options = {}) {
+  async getEvents (filters = {}, options = {}) {
     const {
       category,
       status = 'published',
@@ -95,7 +95,7 @@ class EventService {
   /**
    * Get single event
    */
-  async getEventById(eventId) {
+  async getEventById (eventId) {
     const event = await Event.findById(eventId)
       .populate('organizer', 'firstName lastName avatar role')
       .populate('attendees.user', 'firstName lastName avatar')
@@ -110,7 +110,7 @@ class EventService {
   /**
    * Update event
    */
-  async updateEvent(eventId, organizerId, updates, isAdmin = false) {
+  async updateEvent (eventId, organizerId, updates, isAdmin = false) {
     const event = await Event.findById(eventId)
 
     if (!event) {
@@ -146,7 +146,7 @@ class EventService {
   /**
    * Delete event
    */
-  async deleteEvent(eventId, userId, isAdmin = false) {
+  async deleteEvent (eventId, userId, isAdmin = false) {
     const event = await Event.findById(eventId)
 
     if (!event) {
@@ -165,7 +165,7 @@ class EventService {
   /**
    * Register for event
    */
-  async registerForEvent(eventId, userId) {
+  async registerForEvent (eventId, userId) {
     const event = await Event.findById(eventId)
 
     if (!event) {
@@ -209,7 +209,7 @@ class EventService {
   /**
    * Cancel registration
    */
-  async cancelRegistration(eventId, userId) {
+  async cancelRegistration (eventId, userId) {
     const event = await Event.findById(eventId)
 
     if (!event) {
@@ -231,7 +231,7 @@ class EventService {
   /**
    * Get user's registered events
    */
-  async getUserEvents(userId, options = {}) {
+  async getUserEvents (userId, options = {}) {
     const { page = 1, limit = 20, status = 'registered' } = options
 
     const events = await Event.find({
@@ -262,7 +262,7 @@ class EventService {
   /**
    * Get events near location
    */
-  async getEventsNearLocation(coordinates, maxDistance = 10000, limit = 20) {
+  async getEventsNearLocation (coordinates, maxDistance = 10000, limit = 20) {
     const events = await Event.find({
       status: 'published',
       startDate: { $gte: new Date() },

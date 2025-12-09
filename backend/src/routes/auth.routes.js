@@ -67,7 +67,7 @@ router.post('/verify-email/:token', async (req, res, next) => {
  */
 router.post('/forgot-password', async (req, res, next) => {
   try {
-    const result = await AuthService.requestPasswordReset(req.body.email)
+    await AuthService.requestPasswordReset(req.body.email)
     res.json({
       success: true,
       message: 'If email exists, reset instructions have been sent'

@@ -155,13 +155,13 @@ router.put('/users/:id/status', validators.objectId, async (req, res, next) => {
       { isActive: req.body.isActive },
       { new: true }
     )
-    
+
     if (!user) {
       const error = new Error('User not found')
       error.statusCode = 404
       throw error
     }
-    
+
     res.json({
       success: true,
       data: user

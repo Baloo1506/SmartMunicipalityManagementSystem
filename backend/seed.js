@@ -1,7 +1,7 @@
 /**
  * Database Seed Script
  * Crée des données de démonstration pour tester l'application
- * 
+ *
  * Usage: npm run seed
  */
 
@@ -61,7 +61,7 @@ const users = [
   }
 ]
 
-const postCategories = ['announcement', 'discussion', 'question', 'suggestion', 'alert']
+// Categories disponibles: 'announcement', 'discussion', 'question', 'suggestion', 'alert'
 
 const posts = [
   {
@@ -150,7 +150,7 @@ Pour toute question, contactez le service Environnement au 01 23 45 67 89.`,
   }
 ]
 
-const eventCategories = ['community', 'sports', 'culture', 'education', 'health', 'government', 'environment']
+// Categories disponibles: 'community', 'sports', 'culture', 'education', 'health', 'government', 'environment'
 
 const events = [
   {
@@ -243,7 +243,7 @@ Les citoyens peuvent assister aux débats dans la limite des places disponibles.
   }
 ]
 
-async function seed() {
+async function seed () {
   try {
     console.log('🌱 Connexion à la base de données...')
     await mongoose.connect(MONGODB_URI)
@@ -296,7 +296,7 @@ async function seed() {
       const daysOffset = (i + 1) * 7 // Événements espacés d'une semaine
       const startDate = new Date(now.getTime() + daysOffset * 24 * 60 * 60 * 1000)
       startDate.setHours(14, 0, 0, 0)
-      
+
       const endDate = new Date(startDate)
       endDate.setHours(18, 0, 0, 0)
 
@@ -338,14 +338,13 @@ async function seed() {
     console.log(`  • ${createdPosts.length} publications`)
     console.log(`  • ${events.length} événements`)
     console.log(`  • ${comments.length} commentaires`)
-    
+
     console.log('\n🔐 Comptes de test :')
     console.log('  Admin    : admin@smms.fr / admin123')
     console.log('  Staff    : marie.dupont@smms.fr / staff123')
     console.log('  Citoyen  : jean.martin@email.com / user123')
 
     console.log('\n✨ Vous pouvez maintenant démarrer l\'application !\n')
-
   } catch (error) {
     console.error('❌ Erreur lors du seed:', error)
   } finally {

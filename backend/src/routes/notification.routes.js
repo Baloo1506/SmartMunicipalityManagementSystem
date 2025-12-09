@@ -102,14 +102,14 @@ router.delete('/:id', protect, validators.objectId, async (req, res, next) => {
 router.post('/subscribe', protect, async (req, res, next) => {
   try {
     const { category } = req.body
-    
+
     // Update user preferences
     const User = (await import('../models/User.js')).default
     await User.findByIdAndUpdate(
       req.user._id,
       { $addToSet: { 'preferences.categories': category } }
     )
-    
+
     res.json({
       success: true,
       message: `Subscribed to ${category} notifications`
@@ -126,13 +126,13 @@ router.post('/subscribe', protect, async (req, res, next) => {
 router.post('/unsubscribe', protect, async (req, res, next) => {
   try {
     const { category } = req.body
-    
+
     const User = (await import('../models/User.js')).default
     await User.findByIdAndUpdate(
       req.user._id,
       { $pull: { 'preferences.categories': category } }
     )
-    
+
     res.json({
       success: true,
       message: `Unsubscribed from ${category} notifications`

@@ -110,12 +110,12 @@ postSchema.index({ title: 'text', content: 'text', tags: 'text' })
 postSchema.index({ category: 1, status: 1, publishedAt: -1 })
 
 // Virtual for vote score
-postSchema.virtual('voteScore').get(function() {
+postSchema.virtual('voteScore').get(function () {
   return (this.votes?.up?.length || 0) - (this.votes?.down?.length || 0)
 })
 
 // Generate excerpt if not provided
-postSchema.pre('save', function(next) {
+postSchema.pre('save', function (next) {
   if (!this.excerpt && this.content) {
     this.excerpt = this.content.substring(0, 200) + (this.content.length > 200 ? '...' : '')
   }

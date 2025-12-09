@@ -12,7 +12,7 @@ class ModerationService {
   /**
    * Create a report
    */
-  async createReport(reporterId, data) {
+  async createReport (reporterId, data) {
     const { contentType, contentId, reason, description, screenshots } = data
 
     // Verify content exists
@@ -50,7 +50,7 @@ class ModerationService {
   /**
    * Get reports (admin)
    */
-  async getReports(filters = {}, options = {}) {
+  async getReports (filters = {}, options = {}) {
     const { status, contentType, priority, reason } = filters
     const { page = 1, limit = 20, sort = '-createdAt' } = options
 
@@ -84,7 +84,7 @@ class ModerationService {
   /**
    * Get single report
    */
-  async getReportById(reportId) {
+  async getReportById (reportId) {
     const report = await Report.findById(reportId)
       .populate('reporter', 'firstName lastName email')
       .populate('resolution.resolvedBy', 'firstName lastName')
@@ -116,7 +116,7 @@ class ModerationService {
   /**
    * Resolve report
    */
-  async resolveReport(reportId, adminId, resolution) {
+  async resolveReport (reportId, adminId, resolution) {
     const { action, notes } = resolution
 
     const report = await Report.findById(reportId)
@@ -144,7 +144,7 @@ class ModerationService {
   /**
    * Apply moderation action
    */
-  async applyModerationAction(contentType, contentId, action, adminId) {
+  async applyModerationAction (contentType, contentId, action, adminId) {
     switch (action) {
       case 'content_removed':
         if (contentType === 'post') {
@@ -171,7 +171,7 @@ class ModerationService {
         // In production, add to ban list
         break
 
-      case 'warning':
+      case 'warning': {
         // Send warning notification to content author
         let authorId
         if (contentType === 'post') {
@@ -193,13 +193,14 @@ class ModerationService {
           })
         }
         break
+      }
     }
   }
 
   /**
    * Dismiss report
    */
-  async dismissReport(reportId, adminId, notes = '') {
+  async dismissReport (reportId, adminId, notes = '') {
     const report = await Report.findById(reportId)
 
     if (!report) {
@@ -222,7 +223,7 @@ class ModerationService {
   /**
    * Get moderation stats
    */
-  async getModerationStats() {
+  async getModerationStats () {
     const [pending, resolved, dismissed] = await Promise.all([
       Report.countDocuments({ status: 'pending' }),
       Report.countDocuments({ status: 'resolved' }),

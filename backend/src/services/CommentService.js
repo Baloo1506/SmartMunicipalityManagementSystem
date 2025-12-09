@@ -10,7 +10,7 @@ class CommentService {
   /**
    * Create a comment
    */
-  async createComment(authorId, postId, content, parentCommentId = null) {
+  async createComment (authorId, postId, content, parentCommentId = null) {
     // Verify post exists
     const post = await Post.findById(postId)
     if (!post) {
@@ -70,7 +70,7 @@ class CommentService {
   /**
    * Get comments for a post
    */
-  async getCommentsByPost(postId, options = {}) {
+  async getCommentsByPost (postId, options = {}) {
     const { page = 1, limit = 50, sort = '-createdAt' } = options
 
     const comments = await Comment.find({
@@ -120,7 +120,7 @@ class CommentService {
   /**
    * Update comment
    */
-  async updateComment(commentId, authorId, content, isAdmin = false) {
+  async updateComment (commentId, authorId, content, isAdmin = false) {
     const comment = await Comment.findById(commentId)
 
     if (!comment) {
@@ -144,7 +144,7 @@ class CommentService {
   /**
    * Delete comment (soft delete)
    */
-  async deleteComment(commentId, userId, isAdmin = false) {
+  async deleteComment (commentId, userId, isAdmin = false) {
     const comment = await Comment.findById(commentId)
 
     if (!comment) {
@@ -165,7 +165,7 @@ class CommentService {
   /**
    * Vote on comment
    */
-  async voteComment(commentId, userId, voteType) {
+  async voteComment (commentId, userId, voteType) {
     const comment = await Comment.findById(commentId)
 
     if (!comment) {
@@ -195,7 +195,7 @@ class CommentService {
   /**
    * Get comments by user
    */
-  async getCommentsByUser(userId, options = {}) {
+  async getCommentsByUser (userId, options = {}) {
     const { page = 1, limit = 20 } = options
 
     const comments = await Comment.find({

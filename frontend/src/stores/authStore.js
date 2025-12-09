@@ -21,17 +21,17 @@ const useAuthStore = create(
         try {
           const response = await api.post('/auth/login', { email, password })
           const { user, token } = response.data.data
-          
+
           set({
             user,
             token,
             isAuthenticated: true,
             isLoading: false
           })
-          
+
           // Set token in API headers
-          api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-          
+          api.defaults.headers.common.Authorization = `Bearer ${token}`
+
           return { success: true }
         } catch (error) {
           set({
@@ -48,16 +48,16 @@ const useAuthStore = create(
         try {
           const response = await api.post('/auth/register', userData)
           const { user, token } = response.data.data
-          
+
           set({
             user,
             token,
             isAuthenticated: true,
             isLoading: false
           })
-          
-          api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-          
+
+          api.defaults.headers.common.Authorization = `Bearer ${token}`
+
           return { success: true }
         } catch (error) {
           set({
@@ -75,7 +75,7 @@ const useAuthStore = create(
           token: null,
           isAuthenticated: false
         })
-        delete api.defaults.headers.common['Authorization']
+        delete api.defaults.headers.common.Authorization
       },
 
       // Update user profile
@@ -89,7 +89,7 @@ const useAuthStore = create(
       initAuth: () => {
         const { token } = get()
         if (token) {
-          api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+          api.defaults.headers.common.Authorization = `Bearer ${token}`
         }
       },
 

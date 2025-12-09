@@ -31,7 +31,7 @@ api.interceptors.response.use(
     // Handle 401 errors (unauthorized)
     if (error.response?.status === 401) {
       // Clear auth and redirect to login
-      localStorage.removeItem('auth-storage')
+      window.localStorage.removeItem('auth-storage')
       window.location.href = '/login'
     }
     return Promise.reject(error)

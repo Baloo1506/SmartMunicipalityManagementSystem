@@ -94,26 +94,26 @@ const userSchema = new mongoose.Schema({
 })
 
 // Virtual for full name
-userSchema.virtual('fullName').get(function() {
+userSchema.virtual('fullName').get(function () {
   return `${this.firstName} ${this.lastName}`
 })
 
 // Hash password before saving
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next()
-  
+
   const salt = await bcrypt.genSalt(12)
   this.password = await bcrypt.hash(this.password, salt)
   next()
 })
 
 // Compare password method
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password)
 }
 
 // Remove sensitive data from JSON
-userSchema.methods.toJSON = function() {
+userSchema.methods.toJSON = function () {
   const obj = this.toObject()
   delete obj.password
   delete obj.verificationToken

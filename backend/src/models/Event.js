@@ -123,18 +123,18 @@ eventSchema.index({ category: 1 })
 eventSchema.index({ title: 'text', description: 'text', tags: 'text' })
 
 // Virtual for attendee count
-eventSchema.virtual('attendeeCount').get(function() {
+eventSchema.virtual('attendeeCount').get(function () {
   return this.attendees?.filter(a => a.status !== 'cancelled').length || 0
 })
 
 // Virtual to check if event is full
-eventSchema.virtual('isFull').get(function() {
+eventSchema.virtual('isFull').get(function () {
   if (!this.capacity) return false
   return this.attendeeCount >= this.capacity
 })
 
 // Validate end date is after start date
-eventSchema.pre('validate', function(next) {
+eventSchema.pre('validate', function (next) {
   if (this.endDate <= this.startDate) {
     this.invalidate('endDate', 'End date must be after start date')
   }

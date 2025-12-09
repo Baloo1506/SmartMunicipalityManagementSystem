@@ -4,7 +4,7 @@
  */
 import { Router } from 'express'
 import EventService from '../services/EventService.js'
-import { protect, optionalAuth, isStaffOrAdmin } from '../middleware/auth.js'
+import { protect, optionalAuth } from '../middleware/auth.js'
 import { validators } from '../middleware/validate.js'
 
 const router = Router()
@@ -16,19 +16,19 @@ const router = Router()
 router.get('/', optionalAuth, validators.pagination, async (req, res, next) => {
   try {
     const { page, limit, category, search, upcoming, startDate, endDate, isOfficial } = req.query
-    
+
     const result = await EventService.getEvents(
-      { 
-        category, 
-        search, 
+      {
+        category,
+        search,
         upcoming: upcoming !== 'false',
-        startDate, 
-        endDate, 
-        isOfficial 
+        startDate,
+        endDate,
+        isOfficial
       },
       { page, limit }
     )
-    
+
     res.json({
       success: true,
       ...result
@@ -103,7 +103,7 @@ router.post('/', protect, validators.createEvent, async (req, res, next) => {
     if (req.body.isOfficial && !['staff', 'admin'].includes(req.user.role)) {
       req.body.isOfficial = false
     }
-    
+
     const event = await EventService.createEvent(req.user._id, req.body)
     res.status(201).json({
       success: true,

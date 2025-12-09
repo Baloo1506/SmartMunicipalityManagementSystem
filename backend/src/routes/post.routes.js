@@ -4,7 +4,7 @@
  */
 import { Router } from 'express'
 import ContentService from '../services/ContentService.js'
-import { protect, optionalAuth, isStaffOrAdmin } from '../middleware/auth.js'
+import { protect, optionalAuth } from '../middleware/auth.js'
 import { validators } from '../middleware/validate.js'
 
 const router = Router()
@@ -16,12 +16,12 @@ const router = Router()
 router.get('/', optionalAuth, validators.pagination, async (req, res, next) => {
   try {
     const { page, limit, category, search, tags, isOfficial, startDate, endDate } = req.query
-    
+
     const result = await ContentService.getPosts(
       { category, search, tags: tags?.split(','), isOfficial, startDate, endDate },
       { page, limit }
     )
-    
+
     res.json({
       success: true,
       ...result
@@ -96,7 +96,7 @@ router.post('/', protect, validators.createPost, async (req, res, next) => {
     if (req.body.isOfficial && !['staff', 'admin'].includes(req.user.role)) {
       req.body.isOfficial = false
     }
-    
+
     const post = await ContentService.createPost(req.user._id, req.body)
     res.status(201).json({
       success: true,

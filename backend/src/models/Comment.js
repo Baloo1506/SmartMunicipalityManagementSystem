@@ -57,12 +57,12 @@ commentSchema.index({ author: 1 })
 commentSchema.index({ parentComment: 1 })
 
 // Virtual for vote score
-commentSchema.virtual('voteScore').get(function() {
+commentSchema.virtual('voteScore').get(function () {
   return (this.votes?.up?.length || 0) - (this.votes?.down?.length || 0)
 })
 
 // Update comment count on post when comment is saved
-commentSchema.post('save', async function() {
+commentSchema.post('save', async function () {
   const Comment = this.constructor
   const count = await Comment.countDocuments({ post: this.post, status: 'active' })
   await mongoose.model('Post').findByIdAndUpdate(this.post, { commentCount: count })

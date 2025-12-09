@@ -10,7 +10,7 @@ class AuthService {
   /**
    * Generate JWT token
    */
-  generateToken(userId) {
+  generateToken (userId) {
     return jwt.sign(
       { id: userId },
       process.env.JWT_SECRET || 'default-secret-change-in-production',
@@ -21,14 +21,14 @@ class AuthService {
   /**
    * Verify JWT token
    */
-  verifyToken(token) {
+  verifyToken (token) {
     return jwt.verify(token, process.env.JWT_SECRET || 'default-secret-change-in-production')
   }
 
   /**
    * Register a new user
    */
-  async register(userData) {
+  async register (userData) {
     const { email, password, firstName, lastName, preferences } = userData
 
     // Check if user exists
@@ -66,10 +66,10 @@ class AuthService {
   /**
    * Login user
    */
-  async login(email, password) {
+  async login (email, password) {
     // Find user with password
     const user = await User.findOne({ email }).select('+password')
-    
+
     if (!user || !(await user.comparePassword(password))) {
       throw new Error('Invalid email or password')
     }
@@ -93,9 +93,9 @@ class AuthService {
   /**
    * Verify email
    */
-  async verifyEmail(token) {
+  async verifyEmail (token) {
     const user = await User.findOne({ verificationToken: token })
-    
+
     if (!user) {
       throw new Error('Invalid verification token')
     }
@@ -110,9 +110,9 @@ class AuthService {
   /**
    * Request password reset
    */
-  async requestPasswordReset(email) {
+  async requestPasswordReset (email) {
     const user = await User.findOne({ email })
-    
+
     if (!user) {
       // Don't reveal if email exists
       return { message: 'If email exists, reset instructions sent' }
@@ -129,9 +129,9 @@ class AuthService {
   /**
    * Reset password
    */
-  async resetPassword(token, newPassword) {
+  async resetPassword (token, newPassword) {
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex')
-    
+
     const user = await User.findOne({
       resetPasswordToken: hashedToken,
       resetPasswordExpires: { $gt: Date.now() }
@@ -152,7 +152,7 @@ class AuthService {
   /**
    * Change password (authenticated)
    */
-  async changePassword(userId, currentPassword, newPassword) {
+  async changePassword (userId, currentPassword, newPassword) {
     const user = await User.findById(userId).select('+password')
 
     if (!user || !(await user.comparePassword(currentPassword))) {

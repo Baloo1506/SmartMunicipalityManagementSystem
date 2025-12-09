@@ -11,7 +11,7 @@ class NotificationService {
   /**
    * Create and send notification
    */
-  async createNotification(recipientId, data) {
+  async createNotification (recipientId, data) {
     const { type, title, message, entityType, entityId, url, priority = 'normal' } = data
 
     // Get user preferences
@@ -75,7 +75,7 @@ class NotificationService {
   /**
    * Send notification to multiple users
    */
-  async sendBulkNotification(recipientIds, data) {
+  async sendBulkNotification (recipientIds, data) {
     const notifications = await Promise.all(
       recipientIds.map(id => this.createNotification(id, data).catch(e => null))
     )
@@ -86,7 +86,7 @@ class NotificationService {
   /**
    * Send notification to all subscribers of a category
    */
-  async notifySubscribers(category, data) {
+  async notifySubscribers (category, data) {
     const subscribers = await User.find({
       'preferences.categories': category,
       isActive: true
@@ -101,7 +101,7 @@ class NotificationService {
   /**
    * Get notifications for user
    */
-  async getUserNotifications(userId, options = {}) {
+  async getUserNotifications (userId, options = {}) {
     const { page = 1, limit = 20, unreadOnly = false } = options
 
     const query = { recipient: userId }
@@ -135,7 +135,7 @@ class NotificationService {
   /**
    * Mark notification as read
    */
-  async markAsRead(notificationId, userId) {
+  async markAsRead (notificationId, userId) {
     const notification = await Notification.findOne({
       _id: notificationId,
       recipient: userId
@@ -153,7 +153,7 @@ class NotificationService {
   /**
    * Mark all notifications as read
    */
-  async markAllAsRead(userId) {
+  async markAllAsRead (userId) {
     await Notification.updateMany(
       { recipient: userId, isRead: false },
       { isRead: true, readAt: new Date() }
@@ -165,7 +165,7 @@ class NotificationService {
   /**
    * Delete notification
    */
-  async deleteNotification(notificationId, userId) {
+  async deleteNotification (notificationId, userId) {
     const notification = await Notification.findOneAndDelete({
       _id: notificationId,
       recipient: userId
@@ -181,7 +181,7 @@ class NotificationService {
   /**
    * Get unread count
    */
-  async getUnreadCount(userId) {
+  async getUnreadCount (userId) {
     const count = await Notification.countDocuments({
       recipient: userId,
       isRead: false
@@ -193,7 +193,7 @@ class NotificationService {
   /**
    * Send email notification (placeholder - implement with nodemailer)
    */
-  async sendEmailNotification(email, subject, message) {
+  async sendEmailNotification (email, subject, message) {
     // In production, configure nodemailer with SendGrid or SMTP
     console.log(`[Email] To: ${email}, Subject: ${subject}`)
     return true

@@ -3,13 +3,13 @@
  * Handles posts, announcements, and discussions
  */
 import Post from '../models/Post.js'
-import { emitToTopic, broadcast } from '../config/socket.js'
+import { emitToTopic } from '../config/socket.js'
 
 class ContentService {
   /**
    * Create a new post
    */
-  async createPost(authorId, postData) {
+  async createPost (authorId, postData) {
     const post = await Post.create({
       ...postData,
       author: authorId
@@ -38,7 +38,7 @@ class ContentService {
   /**
    * Get all posts with filters
    */
-  async getPosts(filters = {}, options = {}) {
+  async getPosts (filters = {}, options = {}) {
     const {
       category,
       status = 'published',
@@ -59,7 +59,7 @@ class ContentService {
     if (isOfficial !== undefined) query.isOfficial = isOfficial
     if (author) query.author = author
     if (tags && tags.length) query.tags = { $in: tags }
-    
+
     if (search) {
       query.$text = { $search: search }
     }
@@ -92,7 +92,7 @@ class ContentService {
   /**
    * Get single post by ID
    */
-  async getPostById(postId, incrementView = true) {
+  async getPostById (postId, incrementView = true) {
     const post = await Post.findById(postId)
       .populate('author', 'firstName lastName avatar role')
 
@@ -111,7 +111,7 @@ class ContentService {
   /**
    * Update post
    */
-  async updatePost(postId, authorId, updates, isAdmin = false) {
+  async updatePost (postId, authorId, updates, isAdmin = false) {
     const post = await Post.findById(postId)
 
     if (!post) {
@@ -143,7 +143,7 @@ class ContentService {
   /**
    * Delete post
    */
-  async deletePost(postId, userId, isAdmin = false) {
+  async deletePost (postId, userId, isAdmin = false) {
     const post = await Post.findById(postId)
 
     if (!post) {
@@ -162,7 +162,7 @@ class ContentService {
   /**
    * Vote on post
    */
-  async votePost(postId, userId, voteType) {
+  async votePost (postId, userId, voteType) {
     const post = await Post.findById(postId)
 
     if (!post) {
@@ -193,7 +193,7 @@ class ContentService {
   /**
    * Get trending posts
    */
-  async getTrendingPosts(limit = 10) {
+  async getTrendingPosts (limit = 10) {
     const posts = await Post.aggregate([
       { $match: { status: 'published' } },
       {
@@ -217,7 +217,7 @@ class ContentService {
   /**
    * Get posts near location
    */
-  async getPostsNearLocation(coordinates, maxDistance = 10000, limit = 20) {
+  async getPostsNearLocation (coordinates, maxDistance = 10000, limit = 20) {
     const posts = await Post.find({
       status: 'published',
       'location.coordinates': {

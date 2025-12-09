@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
     extend: {
@@ -17,7 +17,7 @@ export default {
           600: '#2563eb',
           700: '#1d4ed8',
           800: '#1e40af',
-          900: '#1e3a8a',
+          900: '#1e3a8a'
         },
         secondary: {
           50: '#f0fdf4',
@@ -29,10 +29,10 @@ export default {
           600: '#16a34a',
           700: '#15803d',
           800: '#166534',
-          900: '#14532d',
+          900: '#14532d'
         }
       }
-    },
+    }
   },
-  plugins: [],
+  plugins: []
 }

@@ -70,7 +70,7 @@ notificationSchema.index({ recipient: 1, isRead: 1 })
 notificationSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 })
 
 // Mark as read method
-notificationSchema.methods.markAsRead = async function() {
+notificationSchema.methods.markAsRead = async function () {
   this.isRead = true
   this.readAt = new Date()
   return this.save()
